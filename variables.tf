@@ -26,7 +26,7 @@ EOT
     admin_users               = optional(set(string))
     backup_blob_container_uri = optional(string)
     power_bi_service_enabled  = optional(bool)
-    querypool_connection_mode = optional(string, "All")
+    querypool_connection_mode = optional(string) # Default: "All"
     tags                      = optional(map(string))
     ipv4_firewall_rule = optional(object({
       name        = string
