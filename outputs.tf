@@ -1,3 +1,7 @@
+output "analysis_services_servers_id" {
+  description = "Map of id values across all analysis_services_servers, keyed the same as var.analysis_services_servers"
+  value       = { for k, v in azurerm_analysis_services_server.analysis_services_servers : k => v.id }
+}
 output "analysis_services_servers_admin_users" {
   description = "Map of admin_users values across all analysis_services_servers, keyed the same as var.analysis_services_servers"
   value       = { for k, v in azurerm_analysis_services_server.analysis_services_servers : k => v.admin_users }
