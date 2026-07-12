@@ -9,6 +9,8 @@ Required:
 Optional:
     - admin_users
     - backup_blob_container_uri
+    - backup_blob_container_uri_key_vault_id (alternative to backup_blob_container_uri - read from Key Vault instead)
+    - backup_blob_container_uri_key_vault_secret_name (alternative to backup_blob_container_uri - read from Key Vault instead)
     - power_bi_service_enabled
     - querypool_connection_mode
     - tags
@@ -19,15 +21,17 @@ Optional:
 EOT
 
   type = map(object({
-    location                  = string
-    name                      = string
-    resource_group_name       = string
-    sku                       = string
-    admin_users               = optional(set(string))
-    backup_blob_container_uri = optional(string)
-    power_bi_service_enabled  = optional(bool)
-    querypool_connection_mode = optional(string) # Default: "All"
-    tags                      = optional(map(string))
+    location                                        = string
+    name                                            = string
+    resource_group_name                             = string
+    sku                                             = string
+    admin_users                                     = optional(set(string))
+    backup_blob_container_uri                       = optional(string)
+    backup_blob_container_uri_key_vault_id          = optional(string)
+    backup_blob_container_uri_key_vault_secret_name = optional(string)
+    power_bi_service_enabled                        = optional(bool)
+    querypool_connection_mode                       = optional(string) # Default: "All"
+    tags                                            = optional(map(string))
     ipv4_firewall_rule = optional(list(object({
       name        = string
       range_end   = string
