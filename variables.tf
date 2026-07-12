@@ -28,28 +28,12 @@ EOT
     power_bi_service_enabled  = optional(bool)
     querypool_connection_mode = optional(string) # Default: "All"
     tags                      = optional(map(string))
-    ipv4_firewall_rule = optional(object({
+    ipv4_firewall_rule = optional(list(object({
       name        = string
       range_end   = string
       range_start = string
-    }))
+    })))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.analysis_services_servers : (
-        contains(["D1", "B1", "B2", "S0", "S1", "S2", "S4", "S8", "S9", "S8v2", "S9v2"], v.sku)
-      )
-    ])
-    error_message = "must be one of: D1, B1, B2, S0, S1, S2, S4, S8, S9, S8v2, S9v2"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.analysis_services_servers : (
-        v.backup_blob_container_uri == null || (length(v.backup_blob_container_uri) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_analysis_services_server's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -72,6 +56,9 @@ EOT
   #   source:    [from resourcegroups.ValidateName] !matched
   # path: location
   #   source:    location.EnhancedValidate: no recognizable `if ... { errors = append(...) }` pattern - read it by hand
+  # path: sku
+  #   condition: contains(["D1", "B1", "B2", "S0", "S1", "S2", "S4", "S8", "S9", "S8v2", "S9v2"], value)
+  #   message:   must be one of: D1, B1, B2, S0, S1, S2, S4, S8, S9, S8v2, S9v2
   # path: ipv4_firewall_rule.range_start
   #   source:    [from azValidate.IPv4Address] !ok
   # path: ipv4_firewall_rule.range_start
@@ -82,6 +69,9 @@ EOT
   #   source:    [from azValidate.IPv4Address] four == nil
   # path: querypool_connection_mode
   #   source:    validation.StringInSlice value list is not a literal []string - likely a generated PossibleValuesFor*() helper; resolve separately
+  # path: backup_blob_container_uri
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: tags
   #   condition: length(value) <= 50
   #   message:   [from tags.Validate: invalid when len(value) > 50]

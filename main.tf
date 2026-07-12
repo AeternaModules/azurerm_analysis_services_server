@@ -12,7 +12,7 @@ resource "azurerm_analysis_services_server" "analysis_services_servers" {
   tags                      = each.value.tags
 
   dynamic "ipv4_firewall_rule" {
-    for_each = each.value.ipv4_firewall_rule != null ? [each.value.ipv4_firewall_rule] : []
+    for_each = each.value.ipv4_firewall_rule != null ? each.value.ipv4_firewall_rule : []
     content {
       name        = ipv4_firewall_rule.value.name
       range_end   = ipv4_firewall_rule.value.range_end
