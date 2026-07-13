@@ -30,7 +30,7 @@ EOT
     backup_blob_container_uri_key_vault_id          = optional(string)
     backup_blob_container_uri_key_vault_secret_name = optional(string)
     power_bi_service_enabled                        = optional(bool)
-    querypool_connection_mode                       = optional(string) # Default: "All"
+    querypool_connection_mode                       = optional(string)
     tags                                            = optional(map(string))
     ipv4_firewall_rule = optional(list(object({
       name        = string
